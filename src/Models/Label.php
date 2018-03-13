@@ -22,6 +22,8 @@ class Label extends DataObject {
         'Pages' => SiteTree::class
     ];
 
+    private static $table_name = 'SiteTreeLabel';
+
     public function getCMSFields() {
         $f = parent::getCMSFields();
         $f->addFieldToTab('Root.Main', ColorField::create('Color', $this->fieldLabel('Color'), $this->Color ?: $this->getDefaultColor()));
