@@ -1,4 +1,6 @@
-SiteTree:
-  extensions: ['SiteTreeLabelExtension']
-LeftAndMain:
-  extra_requirements_css: ['sitetree-labels/css/sitetree-labels.css']
+SilverStripe\CMS\Model\SiteTree:
+  extensions:
+    - jzubero\SiteTreeLabels\Extensions\SiteTreeExtension
+SilverStripe\Admin\LeftAndMain:
+  extra_requirements_css:
+    - 'sitetree-labels/css/sitetree-labels.css'

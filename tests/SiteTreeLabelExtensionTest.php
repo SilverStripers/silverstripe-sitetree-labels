@@ -1,5 +1,11 @@
 <?php
 
+namespace jzubero\Tests;
+
+use SilverStripe\CMS\Model\SiteTree;
+use SilverStripe\Core\Config\Config;
+use SilverStripe\Dev\SapphireTest;
+
 class SiteTreeLabelExtensionTest extends SapphireTest
 {
     protected static $fixture_file = [
@@ -17,8 +23,7 @@ class SiteTreeLabelExtensionTest extends SapphireTest
 
     public function testSiteTreeLabelsReturnsEmptyListWhenSwitchedOff()
     {
-        Config::inst()->update('SiteTree', 'show_labels', false);
-
+        Config::modify()->set(SiteTree::class, 'show_labels', false);
         $pageWithLabels = $this->objFromFixture('Page', 'two-labels');
 
         /** @var ArrayList $labels */
@@ -59,9 +64,7 @@ class SiteTreeLabelExtensionTest extends SapphireTest
     public function testSiteTreeLabelsReturnsArrayListWhenSwitchedOn($pageFixtureName, $expectedResult)
     {
         $page = $this->objFromFixture('Page', $pageFixtureName);
-
         $labels = $page->SiteTreeLabels();
-
-        $this->assertDOSEquals($expectedResult, $labels);
+        $this->assertListEquals($expectedResult, $labels);
     }
 }

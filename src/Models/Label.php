@@ -1,6 +1,13 @@
 <?php
 
-class SiteTreeLabel extends DataObject {
+namespace jzubero\SiteTreeLabels\Models;
+
+
+use SilverStripe\CMS\Model\SiteTree;
+use SilverStripe\ORM\DataObject;
+
+
+class Label extends DataObject {
 
     private static $show_menu_labels = true;
 
@@ -25,13 +32,13 @@ class SiteTreeLabel extends DataObject {
     /**
      * @return ValidationResult
      */
-    protected function validate() {
+    public function validate() {
         $validator = parent::validate();
 
         // Forbid duplicate titles
         if (!$this->isInDB() &&
-            SiteTreeLabel::get()->filter('Title', $this->Title)->exists())
-            $validator->error(_t('SiteTreeLabel.ERROR_TITLE_EXISTS', "A label \"{title}\" exists already. Consider linking the existing one.", '', array('title' => $this->Title)));
+            Label::get()->filter('Title', $this->Title)->exists())
+            $validator->addError(_t('SiteTreeLabel.ERROR_TITLE_EXISTS', "A label \"{title}\" exists already. Consider linking the existing one.", '', array('title' => $this->Title)));
 
         return $validator;
     }
@@ -40,11 +47,10 @@ class SiteTreeLabel extends DataObject {
         $labels = parent::fieldLabels($includerelations);
         $labels['Title'] = _t('SiteTreeLabel.TITLE', 'Title');
         $labels['Color'] = _t('SiteTreeLabel.COLOR', 'Color');
-
         return $labels;
     }
 
     public function getDefaultColor() {
-        return Config::inst()->get(SiteTreeLabel::class, 'label_color');
+        return self::config()->get('label_color');
     }
 }

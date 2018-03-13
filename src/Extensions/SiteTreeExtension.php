@@ -1,16 +1,28 @@
 <?php
 
-class SiteTreeLabelExtension extends DataExtension {
+namespace jzubero\SiteTreeLabels\Extensions;
+
+use jzubero\SiteTreeLabels\Models\Label;
+use SilverStripe\CMS\Model\SiteTree;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\GridField\GridField;
+use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
+use SilverStripe\ORM\ArrayList;
+use SilverStripe\ORM\DataExtension;
+
+
+class SiteTreeExtension extends DataExtension {
 
     private static $show_labels = true;
 
     private static $many_many = [
-        'Labels' => SiteTreeLabel::class
+        'Labels' => Label::class
     ];
 
     public function updateSettingsFields(FieldList $fields) {
-        $fields->addFieldToTab('Root.Settings', GridField::create('Labels', _t('SiteTreeLabel.LABELS', 'Label'), $this->owner->Labels(),
-            GridFieldConfig_RelationEditor::create()));
+        $fields->addFieldToTab('Root.Settings',
+            GridField::create('Labels', _t('SiteTreeLabel.LABELS', 'Label'), $this->owner->Labels(),
+            GridFieldConfig_RecordEditor::create()));
     }
 
     /**
@@ -27,10 +39,10 @@ class SiteTreeLabelExtension extends DataExtension {
 
         // Add Menu Labels if available and activated
         if ($this->doShowMenuLabels())
-            foreach (MenuItem::get()->filter('PageID', $this->owner->ID) as $menuItem) {
+            foreach (Heyday\MenuManager\MenuItem::get()->filter('PageID', $this->owner->ID) as $menuItem) {
                 $labels->add([
                     'Title' => $menuItem->MenuSet()->Name,
-                    'Color' => singleton('SiteTreeLabel')->getDefaultColor()
+                    'Color' => singleton(Label::class)->getDefaultColor()
                 ]);
             }
 
@@ -49,7 +61,7 @@ class SiteTreeLabelExtension extends DataExtension {
      * @return bool
      */
     private function doShowLabels() {
-        return Config::inst()->get('SiteTree', 'show_labels') === true;
+        return SiteTree::config()->get('show_labels') === true;
     }
 
     /**
@@ -58,6 +70,7 @@ class SiteTreeLabelExtension extends DataExtension {
      * @return bool
      */
     private function doShowMenuLabels() {
-        return class_exists('MenuItem') && class_exists('MenuSet') && Config::inst()->get('SiteTreeLabel', 'show_menu_labels');
+        return class_exists('Heyday\MenuManager\MenuItem') && class_exists('Heyday\MenuManager\MenuSet') &&
+            Label::config()->get('show_menu_labels');
     }
 }

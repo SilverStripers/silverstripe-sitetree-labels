@@ -21,6 +21,10 @@
         "phpunit/PHPUnit": "~3.7"
     },
     "extra": {
-        "installer-name": "sitetree-labels"
+        "installer-name": "sitetree-labels",
+        "expose": [
+            "client/css",
+            "client/lang"
+        ]
     }
 }

@@ -1,6 +1,14 @@
 <?php
 
-class SiteTreeLabelReport extends SS_Report {
+namespace jzubero\SiteTreeLabels\Reports;
+
+use jzubero\SiteTreeLabels\Models\Label;
+use SilverStripe\Forms\DropdownField;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\ORM\ArrayList;
+use SilverStripe\Reports\Report;
+
+class LabelReport extends Report {
 
     public function title() {
         return _t('SiteTreeLabel.REPORT_TITLE', 'Pages with Site Tree Labels assigned');
@@ -20,7 +28,7 @@ class SiteTreeLabelReport extends SS_Report {
             !($labelId = $params['Label']))
             return ArrayList::create();
 
-        return SiteTreeLabel::get()->byID($labelId)->Pages();
+        return Label::get()->byID($labelId)->Pages();
     }
 
     public function columns() {
@@ -34,7 +42,7 @@ class SiteTreeLabelReport extends SS_Report {
 
     public function parameterFields() {
         return new FieldList(
-            new DropdownField('Label', _t('SiteTreeLabel.SINGULARNAME'), SiteTreeLabel::get()->sort('Title')->map())
+            new DropdownField('Label', _t('SiteTreeLabel.SINGULARNAME'), Label::get()->sort('Title')->map())
         );
     }
 }
