@@ -3,4 +3,4 @@ SilverStripe\CMS\Model\SiteTree:
     - jzubero\SiteTreeLabels\Extensions\SiteTreeExtension
 SilverStripe\Admin\LeftAndMain:
   extra_requirements_css:
-    - 'sitetree-labels/css/sitetree-labels.css'
+    - 'jzubero/silverstripe-sitetree-labels: css/sitetree-labels.css'

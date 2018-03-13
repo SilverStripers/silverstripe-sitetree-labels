@@ -15,7 +15,7 @@
     "require": {
         "php": ">=5.5.0, <7.2",
         "silverstripe/cms": "^4.0.3",
-        "ryanpotter/silverstripe-color-field": "^0.1.0"
+        "ryanpotter/silverstripe-color-field": "dev-master"
     },
     "require-dev": {
         "phpunit/PHPUnit": "~3.7"
